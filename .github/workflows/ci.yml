@@ -44,5 +44,5 @@ jobs:
         run: |
           docker run -d -p 3000:3000 --name app nodepipeline-typescript
           sleep 5
-          curl -f http://localhost:3000//api/v1/clients/
+          curl -f http://localhost:3000/api/v1/clients/
           docker stop app
