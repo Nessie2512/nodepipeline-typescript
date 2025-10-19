@@ -42,7 +42,7 @@ jobs:
       # 7️⃣ Testa se o container sobe corretamente
       - name: Run container and check health
         run: |
-          docker run -d -p 3000:3000 --name app nodepipeline-typescrip
+          docker run -d -p 3000:3000 --name app nodepipeline-typescript
           sleep 5
           curl -f http://localhost:3000//api/v1/clients/
           docker stop app
