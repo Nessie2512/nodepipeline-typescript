@@ -1,0 +1,48 @@
+name: CI - Node Docker TypeScript
+
+# 🚀 Quando este workflow será executado
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+# ⚙️ Definição dos jobs (tarefas)
+jobs:
+  build:
+    runs-on: ubuntu-latest   # Máquina virtual que executará o pipeline
+
+    steps:
+      # 1️⃣ Clona o código do repositório
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Instala Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # 3️⃣ Instala dependências
+      - name: Install dependencies
+        run: npm ci
+
+      # 4️⃣ Compila TypeScript
+      - name: Build TypeScript
+        run: npm run build
+
+      # 5️⃣ (Opcional) Roda testes
+      # - name: Run tests
+      #   run: npm test
+
+      # 6️⃣ Constrói imagem Docker
+      - name: Build Docker image
+        run: docker build -t nodepipeline-typescript . 
+
+      # 7️⃣ Testa se o container sobe corretamente
+      - name: Run container and check health
+        run: |
+          docker run -d -p 3000:3000 --name app nodepipeline-typescrip
+          sleep 5
+          curl -f http://localhost:3000//api/v1/clients/
+          docker stop app
